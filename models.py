@@ -109,9 +109,9 @@ class PhysicalAttention(nn.Module):
         curr_rel_embedding = self.spatial_embedding(end_pos)
         curr_rel_embedding = curr_rel_embedding.view(-1, 1, self.embedding_dim).repeat(1, self.L, 1)
 
-        vgg = vgg.view(-1, self.D)
-        features_proj = self.pre_att_proj(vgg)
-        features_proj = features_proj.view(-1, self.L, self.D_down)
+        vgg = vgg.view(-1, self.D) # 6300 * 512
+        features_proj = self.pre_att_proj(vgg) # 6300 16
+        features_proj = features_proj.view(-1, self.L, self.D_down) # 7 900 16
 
         mlp_h_input = torch.cat([features_proj, curr_rel_embedding], dim=2)
         attn_h = self.mlp_pre_attn(mlp_h_input.view(-1, self.embedding_dim+self.D_down))

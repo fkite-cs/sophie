@@ -25,6 +25,22 @@ def init_weights(m):
 def get_dtypes():
     return torch.cuda.LongTensor, torch.cuda.FloatTensor
 
+def test_dataset():
+    train_path = get_dset_path(DATASET_NAME, 'train')
+    val_path = get_dset_path(DATASET_NAME, 'val')
+    long_dtype, float_dtype = get_dtypes()
+
+    print("Initializing train dataset")
+    train_dset, train_loader = data_loader(train_path)
+    print("Initializing val dataset")
+    _, val_loader = data_loader(val_path)
+    obs_seq, pred_seq, obs_seq_rel, pred_seq_rel = next(iter(train_loader))
+    print("obs_seq ", obs_seq.shape)
+    print("pred_seq ", pred_seq.shape)
+    print("obs_seq_rel ", obs_seq_rel.shape)
+    print("pred_seq_rel ", pred_seq_rel.shape)
+
+
 def main():
     train_path = get_dset_path(DATASET_NAME, 'train')
     val_path = get_dset_path(DATASET_NAME, 'val')
@@ -239,4 +255,6 @@ def check_accuracy(loader, generator, discriminator, d_loss_fn, limit=False):
     generator.train()
     return metrics
 
-main()
+if __name__ == "__main__":
+    # main()
+    test_dataset()
